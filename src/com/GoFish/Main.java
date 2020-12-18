@@ -1,6 +1,7 @@
 package com.GoFish;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -9,40 +10,51 @@ public class Main {
         // write your code here
         Scanner myScanner = new Scanner(System.in);
         int numOfPlayers = 0;
+        DeckOfCards myDeck = new DeckOfCards();
+        myDeck.shuffleDeck();
 
         ArrayList<Person> gamePlayers= new ArrayList<Person>();
 
+        numOfPlayers = gameInit(myScanner);
+
+        Collections.copy(gamePlayers,registerPlayers(numOfPlayers,myScanner));
+
+    }
+
+    public static int gameInit( Scanner input){
+        //ASK FOR PLAYERS
+        int newPlayers;
         System.out.println("How many players? ");
-        numOfPlayers = myScanner.nextInt();
-        myScanner.nextLine();
+        newPlayers = input.nextInt();
+        input.nextLine();
 
-        System.out.println(numOfPlayers);
+        System.out.println(newPlayers);
 
-        for(int i = 0; i < numOfPlayers; i++){
+        return newPlayers;
+    }
+
+    public static ArrayList registerPlayers(int players,Scanner input){
+        ArrayList<Person> gPlayers = new ArrayList<Person>();
+        for(int i = 0; i < players; i++){
             if( i < 1){
                 //System.out.print("Create Dealer");
                 Dealer myDealer = new Dealer();
-                myDealer = createDealer(myScanner);
-                gamePlayers.add(myDealer);
+                myDealer = createDealer(input);
+                gPlayers.add(myDealer);
                 System.out.println(myDealer.getName());
-                System.out.println(gamePlayers.get(0).getName());
+                System.out.println(gPlayers.get(0).getName());
             }
             else{
                 System.out.println("Create Players");
                 Player myPlayer = new Player();
-                myPlayer = createPlayer(myScanner);
-                gamePlayers.add(myPlayer);
+                myPlayer = createPlayer(input);
+                gPlayers.add(myPlayer);
                 System.out.println(myPlayer.getName());
-                System.out.println(gamePlayers.get(i).getName());
+                System.out.println(gPlayers.get(i).getName());
             }
         }
 
-    }
-
-    public static void gameloop(){
-        //ASK FOR PLAYERS
-
-
+        return gPlayers;
     }
 
     public static Dealer createDealer(Scanner theScanner){
@@ -67,6 +79,20 @@ public class Main {
         return myPlayer;
     }
 
-    //public static void createPlayers
+    public static void dealCards(ArrayList<Person> _players, DeckOfCards _deck, int amountOfPlayers){
 
+        int numberOfCardToDeal = 0;
+        if(amountOfPlayers<4){
+            //
+            numberOfCardToDeal = 7;
+        }else{
+            //
+            numberOfCardToDeal = 5;
+        }
+
+        for(int i = 0; i < numberOfCardToDeal; i++){
+            _players.forEach(player -> player.AddCardToHand(_deck.pullRandomRemoveFromDeck(), 0));
+        }
+
+    }
 }
