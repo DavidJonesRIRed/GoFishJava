@@ -35,4 +35,8 @@ public class Hand {
 
         return result;
     }
+
+    public void checkBooks(){
+
+    }
 }
